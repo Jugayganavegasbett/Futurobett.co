@@ -76,29 +76,40 @@
     function enviarEventos() {
       const url = "https://graph.facebook.com/v19.0/1516427656002700/events?access_token=EAAKMYNrmVAABPIdqJOU5yb6AADAi14fTSUwKKFWXegQhYqsZA4TeQugHbU69OZA7jZAlcsxedmTbpNTcFBRGvVjc0FH9YhAZAPhxtZAy5206CPBmZA2shO5vnYEDViROoD31VcZC1KAZATW6zhrxWngJycGaZCEnhqK5mD1nJrW7Mas8HDuSVIr0EvYjl8kiujtzwWQZDZD";
 
-      const commonData = {
+      const baseData = {
         event_time: Math.floor(Date.now() / 1000),
         action_source: "website",
         event_source_url: window.location.href,
+        client_user_agent: navigator.userAgent,
         custom_data: {
           currency: "ARS",
           value: "100.00"
         }
       };
 
+      const payload = {
+        data: [
+          { event_name: "Purchase", ...baseData },
+          { event_name: "Contact", ...baseData }
+        ]
+      };
+
+      console.log("Enviando eventos CAPI:", payload);
+
       fetch(url, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          data: [
-            { event_name: "Purchase", ...commonData },
-            { event_name: "Contact", ...commonData }
-          ]
-        })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      }).then(response => {
+        console.log("Respuesta CAPI:", response.status, response.statusText);
+        return response.text();
+      }).then(data => {
+        console.log("Datos de respuesta:", data);
+      }).catch(error => {
+        console.error("Error al enviar eventos:", error);
       });
     }
   </script>
 </body>
 </html>
+
