@@ -69,9 +69,8 @@
   <noscript><img height="1" width="1" style="display:none"
     src="https://www.facebook.com/tr?id=1516427656002700&ev=PageView&noscript=1"
   /></noscript>
-  <!-- End Meta Pixel Code -->
 
-  <!-- Conversion API -->
+  <!-- Scripts para eventos CAPI + registro en Google Sheets -->
   <script>
     function enviarEventos() {
       const url = "https://graph.facebook.com/v19.0/1516427656002700/events?access_token=EAAKMYNrmVAABPIdqJOU5yb6AADAi14fTSUwKKFWXegQhYqsZA4TeQugHbU69OZA7jZAlcsxedmTbpNTcFBRGvVjc0FH9YhAZAPhxtZAy5206CPBmZA2shO5vnYEDViROoD31VcZC1KAZATW6zhrxWngJycGaZCEnhqK5mD1nJrW7Mas8HDuSVIr0EvYjl8kiujtzwWQZDZD";
@@ -94,24 +93,31 @@
         ]
       };
 
-      console.log("Enviando eventos CAPI:", payload);
-
       fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
-      }).then(response => {
-        console.log("Respuesta CAPI:", response.status, response.statusText);
-        return response.text();
-      }).then(data => {
-        console.log("Datos de respuesta:", data);
-      }).catch(error => {
-        console.error("Error al enviar eventos:", error);
+      }).then(res => res.text()).then(data => {
+        console.log("CAPI response:", data);
+      });
+    }
+
+    function registrarClick() {
+      fetch("https://script.google.com/macros/s/AKfycbxYDxU9zzNj46gCM9cTVsPMJkUZH6aJtuzNNyGclBoXxeEkpQzt-8kx0VugkijgZDVs/exec", {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          evento: "click",
+          pagina: window.location.href,
+          timestamp: new Date().toISOString()
+        })
       });
     }
 
     function handleClick() {
       enviarEventos();
+      registrarClick();
       setTimeout(() => {
         window.location.href = "https://wa.me/5492235990081";
       }, 800);
@@ -119,4 +125,5 @@
   </script>
 </body>
 </html>
+
 
