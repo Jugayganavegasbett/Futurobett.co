@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bienvenido</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+      background-color: #1a0736;
+      color: white;
+      text-align: center;
+    }
+    .container {
+      padding: 40px 20px;
+    }
+    img.logo {
+      max-width: 180px;
+      margin-bottom: 30px;
+    }
+    h1 {
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+    p {
+      font-size: 18px;
+      margin-bottom: 30px;
+    }
+    .cta-button {
+      background-color: #FFD700;
+      color: #1a0736;
+      border: none;
+      padding: 15px 30px;
+      font-size: 18px;
+      font-weight: bold;
+      border-radius: 10px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="logo.png" alt="Logo" class="logo" />
+    <h1>¡Bienvenido!</h1>
+    <p>Activá tu bono exclusivo de bienvenida</p>
+    <a class="cta-button" href="https://wa.me/5492235990081" onclick="enviarEventos()">Quiero mi Bono</a>
+  </div>
+
+  <!-- Meta Pixel Code -->
+  <script>
+    !function(f,b,e,v,n,t,s){
+      if(f.fbq)return;n=f.fbq=function(){n.callMethod ?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)
+    }(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1516427656002700');
+    fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=1516427656002700&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
+
+  <!-- Conversion API -->
+  <script>
+    function enviarEventos() {
+      const url = "https://graph.facebook.com/v19.0/1516427656002700/events?access_token=EAAKMYNrmVAABPIdqJOU5yb6AADAi14fTSUwKKFWXegQhYqsZA4TeQugHbU69OZA7jZAlcsxedmTbpNTcFBRGvVjc0FH9YhAZAPhxtZAy5206CPBmZA2shO5vnYEDViROoD31VcZC1KAZATW6zhrxWngJycGaZCEnhqK5mD1nJrW7Mas8HDuSVIr0EvYjl8kiujtzwWQZDZD";
+
+      const commonData = {
+        event_time: Math.floor(Date.now() / 1000),
+        action_source: "website",
+        event_source_url: window.location.href,
+        custom_data: {
+          currency: "ARS",
+          value: "100.00"
+        }
+      };
+
+      fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          data: [
+            { event_name: "Purchase", ...commonData },
+            { event_name: "Contact", ...commonData }
+          ]
+        })
+      });
+    }
+  </script>
+</body>
+</html>
